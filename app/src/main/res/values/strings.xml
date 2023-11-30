@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">HotelsLook</string>
+    <string name="action_map">MAP</string>
+    <string name="action_info">INFO</string>
+    <string name="action_list">LIST</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="map_fragment_label">Map Fragment</string>
+    <string name="info_fragment_label">Hello, plein d\'infos arrive soon</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="lorem_ipsum">
+        lorem_ipsum
+    </string>
+
+
+
+</resources>
