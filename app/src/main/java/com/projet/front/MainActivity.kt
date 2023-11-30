@@ -29,7 +29,7 @@ import kotlin.properties.ReadOnlyProperty
 
 const val SERVER_BASE_URL = "https://app-c39a76fd-f893-49a2-baf7-720a2a9c0d4f.cleverapps.io/"
 
-
+//test git
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
