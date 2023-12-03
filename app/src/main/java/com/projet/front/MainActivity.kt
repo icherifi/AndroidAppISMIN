@@ -1,31 +1,16 @@
 package com.projet.front
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
-import com.ismin.android.Hotel
 import com.projet.front.databinding.ActivityMainBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.properties.ReadOnlyProperty
 
 const val SERVER_BASE_URL = "https://app-c39a76fd-f893-49a2-baf7-720a2a9c0d4f.cleverapps.io/"
 
@@ -34,7 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController : NavController
-
+    private lateinit var hostFragment: NavHostFragment
     private lateinit var sharedViewModel: HotelViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,10 +34,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
 
-        val hostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        hostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
         navController = hostFragment.navController
-
-
 
     }
 
@@ -88,6 +71,15 @@ class MainActivity : AppCompatActivity() {
                 // Do something when the info menu item is clicked
                 Toast.makeText(this, "Info clicked", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_global_InfoFragment)
+                return true
+            }
+
+            R.id.action_refresh -> {
+                // Refresh when the icon is clicked
+                Toast.makeText(this, "Refresh..", Toast.LENGTH_SHORT).show()
+                //navController.navigate(R.id.action_global_FirstFragment)
+                val currentDestination = hostFragment.childFragmentManager.primaryNavigationFragment  as FirstFragment
+                currentDestination.refreshHotels()
                 return true
             }
             else -> super.onOptionsItemSelected(item)

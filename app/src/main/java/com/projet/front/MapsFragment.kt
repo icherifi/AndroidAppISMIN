@@ -1,19 +1,18 @@
 package com.projet.front
 
+import android.content.Context
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.ismin.android.Hotel
+import com.google.gson.Gson
 import com.projet.front.databinding.FragmentFirstBinding
 
 private const val ARG_HOTELS = "param1"
@@ -22,7 +21,6 @@ class MapsFragment : Fragment() {
     private lateinit var param1: ArrayList<Hotel>
     private var _binding: FragmentFirstBinding? = null
     private val binding get() = _binding!!
-    private val sharedViewModel: HotelViewModel by activityViewModels()
 
     private lateinit var hotels : ArrayList<Hotel>
 
@@ -53,7 +51,12 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        hotels = sharedViewModel.hotels.value!!
+        val sharedPreferences = requireContext().getSharedPreferences("hotels",
+            Context.MODE_PRIVATE
+        )
+        val cachedHotelsString = sharedPreferences.getString("cachedHotels", null)
+        if (cachedHotelsString != null) {
+            hotels = Gson().fromJson(cachedHotelsString, HotelMap::class.java).getAllHotels()}
         return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 

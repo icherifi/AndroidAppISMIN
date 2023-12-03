@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
-import com.ismin.android.Hotel
 import com.projet.front.databinding.FragmentSecondBinding
 
 /**
@@ -38,10 +37,14 @@ class SecondFragment : Fragment() {
         Log.i("CLICK", "param1: $param1")
 
 
-        val nameHotel = param1.NAME as String
+        val nameHotel = param1.NAME
+        val address = param1.ADDRESS
+        val zip = param1.ZIPCODE
 
-        val textViewSecond = view.findViewById<TextView>(R.id.textview_second)
-        textViewSecond.text = nameHotel
+        view.findViewById<TextView>(R.id.textview_name).text = nameHotel
+        view.findViewById<TextView>(R.id.textview_address).text = address
+        view.findViewById<TextView>(R.id.textview_zipcode).text = zip.toString()
+
 
         return binding.root
 

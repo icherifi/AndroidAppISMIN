@@ -3,8 +3,6 @@ package com.projet.front
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ismin.android.Hotel
-
 class HotelViewModel : ViewModel() {
 
     private val _hotels = MutableLiveData<ArrayList<Hotel>>()
@@ -14,7 +12,7 @@ class HotelViewModel : ViewModel() {
         return _hotels.value
     }
 
-    fun setHotels(hotels: ArrayList<Hotel>) {
+    fun setHotels(hotels: ArrayList<Hotel>?) {
         _hotels.value = hotels
     }
 

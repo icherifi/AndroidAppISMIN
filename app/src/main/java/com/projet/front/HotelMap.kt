@@ -1,6 +1,5 @@
 package com.projet.front
 
-import com.ismin.android.Hotel
 import java.lang.IllegalArgumentException
 
 class HotelMap {

@@ -1,4 +1,4 @@
-package com.ismin.android
+package com.projet.front
 
 import java.io.Serializable
 
