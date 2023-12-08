@@ -1,19 +1,16 @@
-package com.ismin.android
+package com.projet.front
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.projet.front.FirstFragment
-import com.projet.front.Hotel
-import com.projet.front.R
+import com.ismin.android.HotelViewHolder
 
 
-class HotelAdapter(private var hotels: List<Hotel>, private var fragment: FirstFragment) : RecyclerView.Adapter<HotelViewHolder>() {
+class HotelAdapter(private var hotels: List<Hotel>, private var fragment: HotelsFragment) : RecyclerView.Adapter<HotelViewHolder>() {
 
     public lateinit var hotel: Hotel
 
@@ -24,26 +21,25 @@ class HotelAdapter(private var hotels: List<Hotel>, private var fragment: FirstF
     }
 
     override fun onBindViewHolder(holder: HotelViewHolder, position: Int) {
+        //convert object Hotel to view holder
         hotel = hotels[position]
         holder.itemView.setOnTouchListener(HandleTouch(hotel, this.fragment))
         holder.txvName.text = hotel.NAME
         holder.txvNumberRooms.text = hotel.NUMROOMS.toString()
         holder.txvZipcode.text = hotel.ZIPCODE.toString()
+        holder.imvFavorite.visibility = if (hotel.isFavorite) View.VISIBLE else View.GONE
     }
 
     override fun getItemCount(): Int {
         return hotels.size
     }
 
-    fun updateBooks(allHotels: List<Hotel>) {
-        hotels = allHotels
-        notifyDataSetChanged()
-    }
-    class HandleTouch(private val hotel: Hotel, private val fragment: FirstFragment ) : View.OnTouchListener {
-
+    class HandleTouch(private val hotel: Hotel, private val fragment: HotelsFragment ) : View.OnTouchListener {
+    //Managing the clicks on the view
         @SuppressLint("ClickableViewAccessibility")
         override fun onTouch(v: View?, event: MotionEvent?): Boolean {
             //Handle of click events on hotels view
+            //Move to detail fragment when clicking
             when (event!!.action) {
                 MotionEvent.ACTION_DOWN -> {
                     v?.alpha = 0.5f
@@ -53,8 +49,7 @@ class HotelAdapter(private var hotels: List<Hotel>, private var fragment: FirstF
                     val bundle = Bundle().apply {
                         putSerializable("param1", hotel)
                     }
-                    fragment.navController.navigate(R.id.action_FirstFragment_to_SecondFragment, bundle)
-
+                    fragment.navController.navigate(R.id.action_HotelsFragment_to_DetailFragment, bundle)
                 }
 
             }

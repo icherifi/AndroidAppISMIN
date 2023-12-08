@@ -13,4 +13,5 @@ data class Hotel(
     val WEB_URL: String = "",
     val GIS_ID: String = "",
     val OBJECTID: Int = 0,
-    val ZIPCODE: Int = 0): Serializable
+    val ZIPCODE: Int = 0,
+    var isFavorite: Boolean = false): Serializable

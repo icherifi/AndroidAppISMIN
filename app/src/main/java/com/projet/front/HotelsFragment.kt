@@ -1,6 +1,5 @@
 package com.projet.front
 
-import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,9 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.ismin.android.HotelAdapter
-import com.projet.front.databinding.FragmentFirstBinding
+import com.projet.front.databinding.FragmentHotelsBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -24,24 +21,17 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+    Contains the list of hotel as a RecyclerView, can view some information on the hotel
  */
 
-class FirstFragment : Fragment() {
+class HotelsFragment : Fragment() {
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentHotelsBinding? = null
     private lateinit var bookAdapter: HotelAdapter
     private lateinit var recyclerView: RecyclerView
     lateinit var navController: NavController
     private val sharedViewModel: HotelViewModel by activityViewModels()
-    private val retrofit = Retrofit.Builder()
-        .addConverterFactory(GsonConverterFactory.create())
-        .baseUrl(SERVER_BASE_URL)
-        .build()
-
-    private val hotelService = retrofit.create(HotelService::class.java)
-
-    private val loadHotelMap = HotelMap()
+    private lateinit var hotels : ArrayList<Hotel>
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -54,21 +44,39 @@ class FirstFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentHotelsBinding.inflate(inflater, container, false)
         val view = binding.root
         recyclerView = view.findViewById(R.id.f_book_list_rcv_books)
         navController = findNavController()
 
-        val sharedPreferences = requireContext().getSharedPreferences("hotels", MODE_PRIVATE)
-        val cachedHotelsString = sharedPreferences.getString("cachedHotels", null)
-        if (cachedHotelsString != null) {
-            println("cachedHot")
-            val cachedHotels = Gson().fromJson(cachedHotelsString, HotelMap::class.java)
-            setupRecyclerView(cachedHotels.getAllHotels())
-        }
-        else{
-            loadHotels()
-        }
+        //connection to the api
+        val retrofit = Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl(SERVER_BASE_URL)
+            .build()
+        val hotelService = retrofit.create(HotelService::class.java)
+        val loadHotelMap = HotelMap()
+
+        hotelService.getAllHotels() //get hotel form database
+            .enqueue(object : Callback<ArrayList<Hotel>> {
+                override fun onResponse(
+                    call: Call<ArrayList<Hotel>>,
+                    response: Response<ArrayList<Hotel>>
+                ) {
+                    val allHotel: ArrayList<Hotel> = response.body()!!
+                    for (hotel in allHotel) {
+                        loadHotelMap.addHotel(hotel)
+                    }
+                    val hotels = loadHotelMap.getAllHotels()
+                    sharedViewModel.setHotels(hotels) //Save in cache the hotels
+
+                    setupRecyclerView(hotels)
+
+                }
+                override fun onFailure(call: Call<ArrayList<Hotel>>, t: Throwable) {
+                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
+                }
+            })
         return binding.root
     }
 
@@ -81,39 +89,6 @@ class FirstFragment : Fragment() {
         _binding = null
     }
 
-    private fun loadHotels() {
-        val sharedPreferences = requireContext().getSharedPreferences("hotels", MODE_PRIVATE)
-        println("loading cached")
-        hotelService.getAllHotels()
-            .enqueue(object : Callback<ArrayList<Hotel>> {
-                override fun onResponse(
-                    call: Call<ArrayList<Hotel>>,
-                    response: Response<ArrayList<Hotel>>
-                ) {
-                    val allHotel: ArrayList<Hotel> = response.body()!!
-                    for (hotel in allHotel) {
-                        loadHotelMap.addHotel(hotel)
-                    }
-                    val hotels = loadHotelMap.getAllHotels()
-                    sharedViewModel.setHotels(hotels) //Partage de la liste des hotels aux autres layers
-
-                    val cachedHotelsString = Gson().toJson(loadHotelMap)
-                    sharedPreferences.edit()
-                        .putString("cachedHotels", cachedHotelsString)
-                        .apply()
-
-                    setupRecyclerView(hotels)
-                }
-
-                override fun onFailure(call: Call<ArrayList<Hotel>>, t: Throwable) {
-                    Toast.makeText(context, t.message, Toast.LENGTH_SHORT).show()
-                }
-            })
-    }
-    fun refreshHotels() {
-        sharedViewModel.setHotels(null)
-        loadHotels()
-    }
     private fun setupRecyclerView(hotels: ArrayList<Hotel>) {
         bookAdapter = HotelAdapter(hotels, firstFrag)
         recyclerView.adapter = bookAdapter
@@ -125,4 +100,5 @@ class FirstFragment : Fragment() {
             )
         )
     }
+
 }

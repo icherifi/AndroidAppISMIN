@@ -5,8 +5,8 @@
     <string name="action_list">LIST</string>
     <string name="action_refresh"> AA </string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="hotels_fragment_label">Hotel Fragment</string>
+    <string name="detail_fragment_label">Detail Fragment</string>
     <string name="map_fragment_label">Map Fragment</string>
     <string name="info_fragment_label">Hello, plein d\'infos arrive soon</string>
     <string name="next">Next</string>
@@ -16,6 +16,8 @@
         lorem_ipsum
     </string>
     <string name="detail_name">name</string>
+    <string name="addfav">Ajout aux favoris</string>
+    <string name="supprfav">Supprimer des favoris</string>
 
 
 </resources>

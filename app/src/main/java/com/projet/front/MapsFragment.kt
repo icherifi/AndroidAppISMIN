@@ -13,34 +13,28 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.Gson
-import com.projet.front.databinding.FragmentFirstBinding
+import com.projet.front.databinding.FragmentHotelsBinding
 
 private const val ARG_HOTELS = "param1"
 
+/**
+ * Fragment, display map with markers corresponding to hotels.
+ */
 class MapsFragment : Fragment() {
     private lateinit var param1: ArrayList<Hotel>
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentHotelsBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var hotels : ArrayList<Hotel>
-
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+
+        val washington = LatLng(38.9071923, -77.0368707)
+        googleMap.setMinZoomPreference(12.0f)
+        googleMap.addMarker(MarkerOptions().position(washington).title("Marker in Washington DC"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(washington))
 
         for (hotel in hotels) {
             val marker = MarkerOptions()
-                .position(LatLng(hotel.X, hotel.Y))
+                .position(LatLng(hotel.Y, hotel.X))
                 .title(hotel.NAME)
             googleMap.addMarker(marker)
         }
@@ -69,7 +63,7 @@ class MapsFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(hotels: ArrayList<Hotel>) =
-            SecondFragment().apply {
+            DetailFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_HOTELS, hotels)
                 }

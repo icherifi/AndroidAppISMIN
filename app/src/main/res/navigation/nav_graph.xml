@@ -8,24 +8,24 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.projet.front.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        android:name="com.projet.front.HotelsFragment"
+        android:label="@string/hotels_fragment_label"
+        tools:layout="@layout/fragment_hotels">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
+            android:id="@+id/action_HotelsFragment_to_DetailFragment"
             app:destination="@id/SecondFragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.projet.front.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:name="com.projet.front.DetailFragment"
+        android:label="@string/detail_fragment_label"
+        tools:layout="@layout/fragment_detail">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_DetailFragment_to_HotelsFragment"
             app:destination="@id/FirstFragment" />
 
     </fragment>

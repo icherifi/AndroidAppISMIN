@@ -42,4 +42,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/r_hotel_number_rooms"
         tools:text="10km" />
+
+    <ImageView
+        android:id="@+id/r_hotel_star_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="show if fav"
+        android:src="@drawable/etoile"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.9"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/r_hotel_name" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
